@@ -13,6 +13,9 @@
       background: #111; 
       color: #ffffff;
       border-radius: 8px;
+      position: relative;
+      min-height: 100vh;
+      padding-bottom: 80px; /* чтобы не закрывала панель */
     }
     h1 {
       text-align: center;
@@ -31,6 +34,131 @@
       box-shadow: 0 0 30px 10px #aefcff;
       margin-bottom: 25px;
     }
+
+    /* Нижняя панель с кнопкой */
+    .bottom-panel {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      max-width: 600px;
+      background: #222;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.7);
+      border-radius: 0 0 8px 8px;
+      z-index: 1000;
+    }
+    .bottom-panel button {
+      background: #08f;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .bottom-panel button:hover {
+      background: #06c;
+    }
+
+    /* Галерея - модальное окно */
+    .gallery-modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.95);
+      color: white;
+      z-index: 2000;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .gallery-modal.active {
+      display: block;
+    }
+    .gallery-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .gallery-header h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 28px;
+      cursor: pointer;
+      line-height: 1;
+    }
+    .places-nav {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .places-nav button {
+      background: #333;
+      border: none;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-weight: 600;
+    }
+    .places-nav button.active, .places-nav button:hover {
+      background: #08f;
+    }
+    .photos {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    .photos img {
+      width: 120px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: border-color 0.3s ease;
+    }
+    .photos img.selected {
+      border-color: #08f;
+    }
+    .photo-description {
+      font-size: 16px;
+      line-height: 1.4;
+      color: #ccc;
+      max-width: 90%;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        max-width: 100%;
+        margin: 20px 10px;
+      }
+      .gallery-modal {
+        max-width: 100%;
+        padding: 15px 10px;
+      }
+      .photos img {
+        width: 80px;
+        height: 60px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -40,11 +168,129 @@
     Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
     С ней приятно общаться, она понимает и помогает в любой ситуации.
   </p>
+
+  <!-- Нижняя панель -->
+  <div class="bottom-panel">
+    <button id="openGalleryBtn">Открыть галерею</button>
+  </div>
+
+  <!-- Галерея (модальное окно) -->
+  <div class="gallery-modal" id="galleryModal">
+    <div class="gallery-header">
+      <h2 id="placeTitle">Парк</h2>
+      <button class="close-btn" id="closeGalleryBtn" aria-label="Закрыть галерею">&times;</button>
+    </div>
+    <div class="places-nav" id="placesNav">
+      <!-- Кнопки локаций добавим через JS -->
+    </div>
+    <div class="photos" id="photosContainer">
+      <!-- Фото через JS -->
+    </div>
+    <div class="photo-description" id="photoDescription">
+      <!-- Описание фото -->
+    </div>
+  </div>
+
+<script>
+  const places = [
+    {
+      name: 'Парк',
+      photos: [
+        {url: 'https://picsum.photos/id/1011/300/200', desc: 'Красивый парк с аллеями и фонтаном.'},
+        {url: 'https://picsum.photos/id/1012/300/200', desc: 'Детская площадка в парке.'},
+        {url: 'https://picsum.photos/id/1013/300/200', desc: 'Озеро в парке.'},
+        {url: 'https://picsum.photos/id/1015/300/200', desc: 'Вечерний вид на парк.'}
+      ]
+    },
+    {
+      name: 'Душ',
+      photos: [
+        {url: 'https://picsum.photos/id/1021/300/200', desc: 'Уютный душ на природе.'},
+        {url: 'https://picsum.photos/id/1022/300/200', desc: 'Современный душевой павильон.'},
+        {url: 'https://picsum.photos/id/1023/300/200', desc: 'Расслабляющий душ.'},
+        {url: 'https://picsum.photos/id/1024/300/200', desc: 'Душ с видом на лес.'}
+      ]
+    },
+    {
+      name: 'Дома',
+      photos: [
+        {url: 'https://picsum.photos/id/1031/300/200', desc: 'Старые дома в центре города.'},
+        {url: 'https://picsum.photos/id/1032/300/200', desc: 'Современный жилой комплекс.'},
+        {url: 'https://picsum.photos/id/1033/300/200', desc: 'Дома на окраине.'},
+        {url: 'https://picsum.photos/id/1034/300/200', desc: 'Ночные огни в домах.'}
+      ]
+    },
+    {
+      name: 'Офис',
+      photos: [
+        {url: 'https://picsum.photos/id/1041/300/200', desc: 'Современный офисный центр.'},
+        {url: 'https://picsum.photos/id/1042/300/200', desc: 'Рабочие места в офисе.'},
+        {url: 'https://picsum.photos/id/1043/300/200', desc: 'Конференц-зал офиса.'},
+        {url: 'https://picsum.photos/id/1044/300/200', desc: 'Вид из офиса на город.'}
+      ]
+    }
+  ];
+
+  let currentPlaceIndex = 0;
+  let currentPhotoIndex = 0;
+
+  const openBtn = document.getElementById('openGalleryBtn');
+  const closeBtn = document.getElementById('closeGalleryBtn');
+  const galleryModal = document.getElementById('galleryModal');
+  const placeTitle = document.getElementById('placeTitle');
+  const placesNav = document.getElementById('placesNav');
+  const photosContainer = document.getElementById('photosContainer');
+  const photoDescription = document.getElementById('photoDescription');
+
+  function renderPlacesNav() {
+    placesNav.innerHTML = '';
+    places.forEach((place, index) => {
+      const btn = document.createElement('button');
+      btn.textContent = place.name;
+      btn.classList.toggle('active', index === currentPlaceIndex);
+      btn.addEventListener('click', () => {
+        currentPlaceIndex = index;
+        currentPhotoIndex = 0;
+        renderGallery();
+      });
+      placesNav.appendChild(btn);
+    });
+  }
+
+  function renderGallery() {
+    const place = places[currentPlaceIndex];
+    placeTitle.textContent = place.name;
+    renderPlacesNav();
+
+    photosContainer.innerHTML = '';
+    place.photos.forEach((photo, idx) => {
+      const img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = `${place.name} фото ${idx + 1}`;
+      img.classList.toggle('selected', idx === currentPhotoIndex);
+      img.addEventListener('click', () => {
+        currentPhotoIndex = idx;
+        updateDescription();
+        renderGallery(); // Чтобы обновить выделение
+      });
+      photosContainer.appendChild(img);
+    });
+
+    updateDescription();
+  }
+
+  function updateDescription() {
+    photoDescription.textContent = places[currentPlaceIndex].photos[currentPhotoIndex].desc;
+  }
+
+  openBtn.addEventListener('click', () => {
+    galleryModal.classList.add('active');
+    renderGallery();
+  });
+
+  closeBtn.addEventListener('click', () => {
+    galleryModal.classList.remove('active');
+  });
+</script>
 </body>
-</html> это моего сайта щас скину бота  
-
-
-
-
-
-
+</html>
