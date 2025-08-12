@@ -1,162 +1,257 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Галерея с карточками</title>
-<style>
-  body {
-    margin: 0;
-    background: #111;
-    color: white;
-    font-family: Arial, sans-serif;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    min-height: 100vh;
-  }
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
-    max-width: 900px;
-    width: 100%;
-  }
-  .card {
-    background: #222;
-    border-radius: 12px;
-    box-shadow: 0 0 20px 5px #08f;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 15px;
-  }
-  .card img {
-    width: 100%;
-    max-height: 180px;
-    object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    box-shadow: 0 0 15px #0af;
-  }
-  .card h2 {
-    margin: 0 0 10px 0;
-    font-weight: 600;
-    font-size: 22px;
-    text-align: center;
-  }
-  .btn-desc {
-    background: #08f;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 8px;
-    color: white;
-    font-size: 16px;
-    cursor: pointer;
-    box-shadow: 0 0 10px #08f;
-    transition: background 0.3s ease;
-  }
-  .btn-desc:hover {
-    background: #0af;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Описание персонажа бота с галереей</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto 100px;
+      padding: 20px;
+      background: #111; 
+      color: #ffffff;
+      border-radius: 8px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+      color: #ffffff;
+      margin-bottom: 40px; 
+    }
+    p {
+      font-size: 18px;
+      line-height: 1.5;
+      text-align: justify;
+      color: #ddd;
+    }
+    img { 
+      max-width: 100%;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      display: block;
+    }
 
-  /* Модальное окно */
-  .modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.75);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-  .modal.active {
-    visibility: visible;
-    opacity: 1;
-  }
-  .modal-content {
-    background: #222;
-    padding: 25px;
-    border-radius: 12px;
-    max-width: 400px;
-    color: #ddd;
-    box-shadow: 0 0 25px #08f;
-    text-align: center;
-  }
-  .modal-content button {
-    margin-top: 20px;
-    background: #08f;
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-</style>
+    /* Меню внизу */
+    .bottom-menu {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #111;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px 0;
+      border-top: 1px solid #333;
+      z-index: 1000;
+    }
+    .menu-btn {
+      background: transparent;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: background 0.3s ease;
+      color: white;
+      font-size: 0;
+    }
+    .menu-btn:hover {
+      background: #222;
+    }
+    .menu-btn svg {
+      width: 26px;
+      height: 26px;
+      fill: white;
+    }
+
+    /* Скрытые блоки */
+    .hidden {
+      display: none;
+    }
+
+    /* Галерея */
+    #gallery {
+      margin-bottom: 100px;
+      max-height: 600px; /* увеличенная высота */
+      overflow-y: auto;
+    }
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px;
+    }
+    .card {
+      background: #222;
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 15px;
+      overflow: visible;
+    }
+    .card img {
+      width: 95%;
+      max-height: 250px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: none;
+    }
+    .card h2 {
+      margin: 0 0 10px 0;
+      font-weight: 600;
+      font-size: 20px;
+      text-align: center;
+      color: white;
+    }
+    .btn-desc {
+      background: transparent;
+      border: 1.8px solid white;
+      padding: 7px 16px;
+      border-radius: 8px;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+      user-select: none;
+      margin-bottom: 10px;
+    }
+    .btn-desc:hover {
+      background: white;
+      color: #111;
+    }
+
+    /* Описание под фото */
+    .desc-box {
+      max-height: 0;
+      overflow: hidden;
+      color: #ddd;
+      font-size: 16px;
+      line-height: 1.4;
+      padding: 0 10px;
+      transition: max-height 0.4s ease, padding 0.4s ease;
+      text-align: center;
+    }
+    .desc-box.active {
+      max-height: 150px;
+      padding: 10px;
+    }
+
+  </style>
 </head>
 <body>
 
-<div class="gallery">
-  <div class="card">
-    <img src="img/park1.jpg" alt="Парк" />
-    <h2>Парк</h2>
-    <button class="btn-desc" data-desc="Красивый парк с аллеями и фонтаном.">Посмотреть описание</button>
+  <!-- Главный контент -->
+  <div id="mainContent">
+    <h1>Лина — персонаж моего бота</h1>
+    <img src="img/ChatGPT Image 2 авг. 2025 г., 09_41_20.png" alt="Лина" />
+    <p>
+      Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
+      С ней приятно общаться, она понимает и помогает в любой ситуации.
+    </p>
   </div>
-  <div class="card">
-    <img src="img/shower1.jpg" alt="Душ" />
-    <h2>Душ</h2>
-    <button class="btn-desc" data-desc="Уютный душ на природе.">Посмотреть описание</button>
-  </div>
-  <div class="card">
-    <img src="img/home1.jpg" alt="Дома" />
-    <h2>Дома</h2>
-    <button class="btn-desc" data-desc="Старые дома в центре города.">Посмотреть описание</button>
-  </div>
-  <div class="card">
-    <img src="img/office1.jpg" alt="Офис" />
-    <h2>Офис</h2>
-    <button class="btn-desc" data-desc="Современный офисный центр.">Посмотреть описание</button>
-  </div>
-</div>
 
-<!-- Модальное окно -->
-<div class="modal" id="modal">
-  <div class="modal-content">
-    <p id="modal-text"></p>
-    <button id="closeModal">Закрыть</button>
+  <!-- Галерея -->
+  <div id="gallery" class="hidden">
+    <div class="gallery">
+      <div class="card">
+        <img src="img/park1.jpg" alt="Парк" />
+        <h2>Парк</h2>
+        <button class="btn-desc" aria-expanded="false" aria-controls="desc1" aria-label="Посмотреть описание парка" data-desc-id="desc1">Посмотреть описание</button>
+        <div class="desc-box" id="desc1">
+          Красивый парк с аллеями и фонтаном.
+        </div>
+      </div>
+      <div class="card">
+        <img src="img/shower1.jpg" alt="Душ" />
+        <h2>Душ</h2>
+        <button class="btn-desc" aria-expanded="false" aria-controls="desc2" aria-label="Посмотреть описание душа" data-desc-id="desc2">Посмотреть описание</button>
+        <div class="desc-box" id="desc2">
+          Уютный душ на природе.
+        </div>
+      </div>
+      <div class="card">
+        <img src="img/home1.jpg" alt="Дома" />
+        <h2>Дома</h2>
+        <button class="btn-desc" aria-expanded="false" aria-controls="desc3" aria-label="Посмотреть описание домов" data-desc-id="desc3">Посмотреть описание</button>
+        <div class="desc-box" id="desc3">
+          Старые дома в центре города.
+        </div>
+      </div>
+      <div class="card">
+        <img src="img/office1.jpg" alt="Офис" />
+        <h2>Офис</h2>
+        <button class="btn-desc" aria-expanded="false" aria-controls="desc4" aria-label="Посмотреть описание офиса" data-desc-id="desc4">Посмотреть описание</button>
+        <div class="desc-box" id="desc4">
+          Современный офисный центр.
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<script>
-  const buttons = document.querySelectorAll('.btn-desc');
-  const modal = document.getElementById('modal');
-  const modalText = document.getElementById('modal-text');
-  const closeModalBtn = document.getElementById('closeModal');
+  <!-- Меню -->
+  <div class="bottom-menu">
+    <button class="menu-btn" id="btnMain" title="Главная" aria-label="Главная">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+    <button class="menu-btn" id="btnGallery" title="Галерея" aria-label="Галерея">
+      <svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM9.5 13.5l2.5 3.01L15.5 12l4.5 6H4l5.5-7.5z"/></svg>
+    </button>
+  </div>
 
-  buttons.forEach(button => {
-    button.addEventListener('click', () => {
-      const desc = button.getAttribute('data-desc');
-      modalText.textContent = desc;
-      modal.classList.add('active');
+  <script>
+    const mainContent = document.getElementById('mainContent');
+    const gallery = document.getElementById('gallery');
+
+    const btnMain = document.getElementById('btnMain');
+    const btnGallery = document.getElementById('btnGallery');
+
+    btnMain.addEventListener('click', () => {
+      mainContent.classList.remove('hidden');
+      gallery.classList.add('hidden');
+      closeAllDescriptions();
     });
-  });
+    btnGallery.addEventListener('click', () => {
+      mainContent.classList.add('hidden');
+      gallery.classList.remove('hidden');
+    });
 
-  closeModalBtn.addEventListener('click', () => {
-    modal.classList.remove('active');
-  });
+    const descButtons = document.querySelectorAll('.btn-desc');
 
-  // Закрыть по клику вне модального окна
-  modal.addEventListener('click', (e) => {
-    if(e.target === modal) {
-      modal.classList.remove('active');
+    function closeAllDescriptions() {
+      document.querySelectorAll('.desc-box.active').forEach(desc => {
+        desc.classList.remove('active');
+      });
+      descButtons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
     }
-  });
-</script>
+
+    descButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const descId = button.getAttribute('data-desc-id');
+        const descBox = document.getElementById(descId);
+
+        if (descBox.classList.contains('active')) {
+          descBox.classList.remove('active');
+          button.setAttribute('aria-expanded', 'false');
+        } else {
+          closeAllDescriptions();
+          descBox.classList.add('active');
+          button.setAttribute('aria-expanded', 'true');
+          descBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
