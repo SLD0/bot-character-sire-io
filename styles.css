@@ -153,13 +153,28 @@ img {
 
 /* Настройки страницы */
 .settings-section h2 {
-  font-weight: 700; /* Чуть жирнее подзаголовок */
-  margin-bottom: 10px; /* Отступ от подзаголовка до списка */
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.settings-section ol {
+  list-style-position: inside;
+  padding-left: 0;
 }
 
 .settings-section ol li {
-  font-weight: 600; /* Чуть жирнее текст пунктов */
-  margin-bottom: 6px; /* Отступ между пунктами */
+  font-weight: 600;
+  margin-bottom: 10px;
+  padding: 10px 14px;
+  border: 1px solid #444;
+  border-radius: 6px;
+  background: #1a1a1a;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.settings-section ol li:hover {
+  border-color: #666;
+  background: #222;
 }
 
 /* Адаптив */
