@@ -195,11 +195,13 @@ img {
     max-width: 100%;
     padding: 20px 0 0 0;
   }
-   .card img {
-    max-width: 90%;   /* не на всю ширину */
-    height: auto;     /* автоматическая высота */
+  .card img {
+    width: auto;      /* убираем 100% ширины */
+    max-width: 90%;   /* ограничиваем ширину */
+    height: auto;     /* сохраняем пропорции */
+    max-height: 350px;/* чтобы не была слишком высокой */
     display: block;
-    margin: 0 auto;   /* центрирование */
-    object-fit: contain; /* без обрезки */
+    margin: 0 auto;   /* центрируем */
+    object-fit: contain;
   }
 }
