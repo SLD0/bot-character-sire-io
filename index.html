@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Описание персонажа бота</title>
+  <title>Описание персонажа бота с галереей</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,8 +13,9 @@
       background: #111; 
       color: #ffffff;
       border-radius: 8px;
-      position: relative; /* для кнопки фиксированной */
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     h1 {
       text-align: center;
@@ -34,56 +35,235 @@
       margin-bottom: 25px;
     }
 
-    /* Кнопка внизу по центру */
-    .gallery-button {
+    /* Меню внизу */
+    .bottom-menu {
       position: fixed;
-      bottom: 20px;
+      bottom: 0;
       left: 50%;
       transform: translateX(-50%);
-      width: 56px;
-      height: 56px;
+      background: #111;
+      width: 100%;
+      max-width: 600px;
+      display: flex;
+      justify-content: space-around;
+      padding: 10px 0;
+      border-top: 1px solid #333;
+      box-shadow: 0 -1px 10px 0 #08f8;
+      z-index: 1000;
+    }
+    .menu-btn {
       background: #08f;
       border-radius: 50%;
-      box-shadow: 0 0 15px #08f;
+      width: 48px;
+      height: 48px;
+      border: none;
+      box-shadow: 0 0 15px 3px #08f;
+      cursor: pointer;
       display: flex;
       justify-content: center;
       align-items: center;
-      cursor: pointer;
-      z-index: 1000;
       transition: background 0.3s ease;
-      border: none;
+      color: white;
     }
-    .gallery-button:hover {
+    .menu-btn:hover {
+      background: #0af;
+      box-shadow: 0 0 20px 4px #0af;
+    }
+    .menu-btn svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+
+    /* Скрытые блоки */
+    .hidden {
+      display: none;
+    }
+
+    /* Галерея */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      margin-bottom: 80px; /* Чтобы меню не перекрывало */
+    }
+    .card {
+      background: #222;
+      border-radius: 12px;
+      box-shadow: 0 0 15px 3px #08f;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px;
+    }
+    .card img {
+      width: 80%; /* фото меньше, не на весь блок */
+      max-height: 140px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 0 10px 3px #08f;
+    }
+    .card h2 {
+      margin: 0 0 8px 0;
+      font-weight: 600;
+      font-size: 20px;
+      text-align: center;
+    }
+    .btn-desc {
+      background: #08f;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      box-shadow: 0 0 10px 3px #08f;
+      transition: background 0.3s ease;
+    }
+    .btn-desc:hover {
       background: #0af;
     }
-    .gallery-button svg {
-      fill: white;
-      width: 28px;
-      height: 28px;
+
+    /* Модальное окно */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.75);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      visibility: hidden;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      z-index: 2000;
     }
+    .modal.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .modal-content {
+      background: #222;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 400px;
+      color: #ddd;
+      box-shadow: 0 0 25px #08f;
+      text-align: center;
+    }
+    .modal-content button {
+      margin-top: 20px;
+      background: #08f;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
-  <h1>Лина — персонаж моего бота</h1>
-  <img src="img/ChatGPT Image 2 авг. 2025 г., 09_41_20.png" alt="Лина" />
-  <p>
-    Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
-    С ней приятно общаться, она понимает и помогает в любой ситуации.
-  </p>
 
-  <!-- Кнопка перехода в галерею -->
-  <button class="gallery-button" title="Открыть галерею" id="openGalleryBtn" aria-label="Открыть галерею">
-    <svg viewBox="0 0 24 24" >
-      <path d="M12 5c-1.103 0-2 .897-2 2h-4c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-6c0-1.103-.897-2-2-2h-4c0-1.103-.897-2-2-2zm0 2c.551 0 1 .449 1 1s-.449 1-1 1-1-.449-1-1 .449-1 1-1zm0 6c-2.206 0-4-1.794-4-4h8c0 2.206-1.794 4-4 4z"/>
-    </svg>
-  </button>
+  <!-- Главный контент -->
+  <div id="mainContent">
+    <h1>Лина — персонаж моего бота</h1>
+    <img src="img/ChatGPT Image 2 авг. 2025 г., 09_41_20.png" alt="Лина" />
+    <p>
+      Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
+      С ней приятно общаться, она понимает и помогает в любой ситуации.
+    </p>
+  </div>
+
+  <!-- Галерея (скрыта по умолчанию) -->
+  <div id="gallery" class="hidden">
+    <div class="gallery">
+      <div class="card">
+        <img src="img/park1.jpg" alt="Парк" />
+        <h2>Парк</h2>
+        <button class="btn-desc" data-desc="Красивый парк с аллеями и фонтаном.">Посмотреть описание</button>
+      </div>
+      <div class="card">
+        <img src="img/shower1.jpg" alt="Душ" />
+        <h2>Душ</h2>
+        <button class="btn-desc" data-desc="Уютный душ на природе.">Посмотреть описание</button>
+      </div>
+      <div class="card">
+        <img src="img/home1.jpg" alt="Дома" />
+        <h2>Дома</h2>
+        <button class="btn-desc" data-desc="Старые дома в центре города.">Посмотреть описание</button>
+      </div>
+      <div class="card">
+        <img src="img/office1.jpg" alt="Офис" />
+        <h2>Офис</h2>
+        <button class="btn-desc" data-desc="Современный офисный центр.">Посмотреть описание</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модальное окно -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <p id="modal-text"></p>
+      <button id="closeModal">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- Меню -->
+  <div class="bottom-menu">
+    <button class="menu-btn" id="btnMain" title="Главная" aria-label="Главная">
+      <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+    </button>
+    <button class="menu-btn" id="btnGallery" title="Галерея" aria-label="Галерея">
+      <svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM9.5 13.5l2.5 3.01L15.5 12l4.5 6H4l5.5-7.5z"/></svg>
+    </button>
+  </div>
 
   <script>
-    const btn = document.getElementById('openGalleryBtn');
-    btn.addEventListener('click', () => {
-      // Открываем gallery.html в новой вкладке браузера
-      window.open('gallery.html', '_blank');
+    const mainContent = document.getElementById('mainContent');
+    const gallery = document.getElementById('gallery');
+
+    const btnMain = document.getElementById('btnMain');
+    const btnGallery = document.getElementById('btnGallery');
+
+    // Переключение между Главной и Галереей
+    btnMain.addEventListener('click', () => {
+      mainContent.classList.remove('hidden');
+      gallery.classList.add('hidden');
+    });
+    btnGallery.addEventListener('click', () => {
+      mainContent.classList.add('hidden');
+      gallery.classList.remove('hidden');
+    });
+
+    // Модальное окно описания
+    const buttons = document.querySelectorAll('.btn-desc');
+    const modal = document.getElementById('modal');
+    const modalText = document.getElementById('modal-text');
+    const closeModalBtn = document.getElementById('closeModal');
+
+    buttons.forEach(button => {
+      button.addEventListener('click', () => {
+        const desc = button.getAttribute('data-desc');
+        modalText.textContent = desc;
+        modal.classList.add('active');
+      });
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      modal.classList.remove('active');
+    });
+
+    // Закрыть по клику вне модального окна
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal) {
+        modal.classList.remove('active');
+      }
     });
   </script>
+
 </body>
 </html>
