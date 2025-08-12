@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Описание персонажа бота с галереей</title>
+  <title>Описание персонажа бота — Главная</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       max-width: 600px;
-      margin: 40px auto 100px; /* снизу место под меню */
+      margin: 40px auto 100px;
       padding: 20px;
       background: #111; 
-      color: #ffffff;
+      color: #fff;
       border-radius: 8px;
       min-height: 100vh;
       display: flex;
@@ -19,8 +19,7 @@
     }
     h1 {
       text-align: center;
-      color: #ffffff;
-      margin-bottom: 40px; 
+      margin-bottom: 40px;
     }
     p {
       font-size: 18px;
@@ -28,13 +27,12 @@
       text-align: justify;
       color: #ddd;
     }
-    img { 
+    img {
       max-width: 100%;
       border-radius: 12px;
       margin-bottom: 25px;
       display: block;
     }
-
     /* Меню внизу */
     .bottom-menu {
       position: fixed;
@@ -45,8 +43,8 @@
       width: 100%;
       max-width: 600px;
       display: flex;
-      justify-content: center; /* кнопки по центру */
-      gap: 15px; /* расстояние между кнопками */
+      justify-content: center;
+      gap: 15px;
       padding: 10px 0;
       border-top: 1px solid #333;
       z-index: 1000;
@@ -64,6 +62,7 @@
       transition: background 0.3s ease;
       color: white;
       font-size: 0;
+      text-decoration: none;
     }
     .menu-btn:hover {
       background: #222;
@@ -73,188 +72,23 @@
       height: 26px;
       fill: white;
     }
-
-    /* Скрытые блоки */
-    .hidden {
-      display: none;
-    }
-
-    /* Галерея */
-    #gallery {
-      margin-bottom: 100px; /* чтобы меню не перекрывало */
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 25px;
-    }
-    .card {
-      background: #222;
-      border-radius: 12px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 15px;
-      transition: height 0.3s ease;
-      overflow: visible;
-    }
-    .card img {
-      width: 80%;
-      max-height: 180px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 10px;
-      box-shadow: none; /* убрали свечения */
-    }
-    .card h2 {
-      margin: 0 0 10px 0;
-      font-weight: 600;
-      font-size: 20px;
-      text-align: center;
-      color: white;
-    }
-    .btn-desc {
-      background: transparent;
-      border: 1.8px solid white;
-      padding: 7px 16px;
-      border-radius: 8px;
-      color: white;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.3s ease, color 0.3s ease;
-      user-select: none;
-      margin-bottom: 10px;
-    }
-    .btn-desc:hover {
-      background: white;
-      color: #111;
-    }
-
-    /* Описание под фото */
-    .desc-box {
-      max-height: 0;
-      overflow: hidden;
-      color: #ddd;
-      font-size: 16px;
-      line-height: 1.4;
-      padding: 0 10px;
-      transition: max-height 0.4s ease, padding 0.4s ease;
-      text-align: center;
-    }
-    .desc-box.active {
-      max-height: 150px; /* достаточно места для текста */
-      padding: 10px;
-    }
-
   </style>
 </head>
 <body>
+  <h1>Лина — персонаж моего бота</h1>
+  <img src="img/Local3.png" alt="Лина" />
+  <p>
+    Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
+    С ней приятно общаться, она понимает и помогает в любой ситуации.
+  </p>
 
-  <!-- Главный контент -->
-  <div id="mainContent">
-    <h1>Лина — персонаж моего бота</h1>
-    <img src="img/Local3.png" alt="Лина" />
-    <p>
-      Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
-      С ней приятно общаться, она понимает и помогает в любой ситуации.
-    </p>
-  </div>
-
-  <!-- Галерея (скрыта по умолчанию) -->
-  <div id="gallery" class="hidden">
-    <div class="gallery">
-      <div class="card">
-        <img src="img/Local2.png" alt="Парк" />
-        <h2>Парк</h2>
-        <button class="btn-desc" aria-expanded="false" aria-controls="desc1" aria-label="Посмотреть описание парка" data-desc-id="desc1">Посмотреть описание</button>
-        <div class="desc-box" id="desc1">
-          Красивый парк с аллеями и фонтаном.
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/Local4.png" alt="Душ" />
-        <h2>Душ</h2>
-        <button class="btn-desc" aria-expanded="false" aria-controls="desc2" aria-label="Посмотреть описание душа" data-desc-id="desc2">Посмотреть описание</button>
-        <div class="desc-box" id="desc2">
-          Уютный душ на природе.
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/Local1.png" alt="Дома" />
-        <h2>Дома</h2>
-        <button class="btn-desc" aria-expanded="false" aria-controls="desc3" aria-label="Посмотреть описание домов" data-desc-id="desc3">Посмотреть описание</button>
-        <div class="desc-box" id="desc3">
-          Старые дома в центре города.
-        </div>
-      </div>
-      <div class="card">
-        <img src="img/Local3.png" alt="Офис" />
-        <h2>Офис</h2>
-        <button class="btn-desc" aria-expanded="false" aria-controls="desc4" aria-label="Посмотреть описание офиса" data-desc-id="desc4">Посмотреть описание</button>
-        <div class="desc-box" id="desc4">
-          Современный офисный центр.
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Меню -->
   <div class="bottom-menu">
-    <button class="menu-btn" id="btnMain" title="Главная" aria-label="Главная">
+    <a href="index.html" class="menu-btn" title="Главная" aria-label="Главная">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-    </button>
-    <button class="menu-btn" id="btnGallery" title="Галерея" aria-label="Галерея">
+    </a>
+    <a href="gallery.html" class="menu-btn" title="Галерея" aria-label="Галерея">
       <svg viewBox="0 0 24 24"><path d="M21 19V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zM9.5 13.5l2.5 3.01L15.5 12l4.5 6H4l5.5-7.5z"/></svg>
-    </button>
+    </a>
   </div>
-
-  <script>
-    const mainContent = document.getElementById('mainContent');
-    const gallery = document.getElementById('gallery');
-
-    const btnMain = document.getElementById('btnMain');
-    const btnGallery = document.getElementById('btnGallery');
-
-    // Переключение между Главной и Галереей
-    btnMain.addEventListener('click', () => {
-      mainContent.classList.remove('hidden');
-      gallery.classList.add('hidden');
-      closeAllDescriptions();
-    });
-    btnGallery.addEventListener('click', () => {
-      mainContent.classList.add('hidden');
-      gallery.classList.remove('hidden');
-    });
-
-    // Открытие/закрытие описания с анимацией
-    const descButtons = document.querySelectorAll('.btn-desc');
-
-    function closeAllDescriptions() {
-      document.querySelectorAll('.desc-box.active').forEach(desc => {
-        desc.classList.remove('active');
-      });
-      descButtons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
-    }
-
-    descButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const descId = button.getAttribute('data-desc-id');
-        const descBox = document.getElementById(descId);
-
-        if (descBox.classList.contains('active')) {
-          descBox.classList.remove('active');
-          button.setAttribute('aria-expanded', 'false');
-        } else {
-          closeAllDescriptions();
-          descBox.classList.add('active');
-          button.setAttribute('aria-expanded', 'true');
-          // Прокрутка к описанию, если надо
-          descBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-      });
-    });
-  </script>
-
 </body>
 </html>
-
