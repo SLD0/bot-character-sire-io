@@ -62,4 +62,14 @@
   <script>
     document.querySelectorAll('.btn-desc').forEach(button => {
       button.addEventListener('click', () => {
-        const descId = butt
+        const descId = button.getAttribute('aria-controls');
+        const descBox = document.getElementById(descId);
+        const isActive = descBox.classList.toggle('active');
+
+        button.setAttribute('aria-expanded', isActive);
+      });
+    });
+  </script>
+
+</body>
+</html>
