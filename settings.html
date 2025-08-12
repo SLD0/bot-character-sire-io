@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Настройки — Бот</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 40px auto 100px;
+      padding: 20px;
+      background: #111;
+      color: #fff;
+      border-radius: 8px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    label {
+      font-size: 18px;
+      user-select: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Настройки</h1>
+
+  <label>
+    <input type="checkbox" id="darkModeToggle" />
+    Темная тема (по умолчанию тёмная)
+  </label>
+
+  <script>
+    const darkModeToggle = document.getElementById('darkModeToggle');
+
+    // Сохранять состояние темы в localStorage, чтобы не сбрасывалась при переходах
+    if (localStorage.getItem('darkMode') === 'false') {
+      document.body.style.background = '#fff';
+      document.body.style.color = '#111';
+      darkModeToggle.checked = true;
+    }
+
+    darkModeToggle.addEventListener('change', () => {
+      if (darkModeToggle.checked) {
+        document.body.style.background = '#fff';
+        document.body.style.color = '#111';
+        localStorage.setItem('darkMode', 'false');
+      } else {
+        document.body.style.background = '#111';
+        document.body.style.color = '#fff';
+        localStorage.setItem('darkMode', 'true');
+      }
+    });
+  </script>
+
+  <nav style="position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); background: #111; width: 100%; max-width: 600px; display: flex; justify-content: center; gap: 15px; padding: 10px 0; border-top: 1px solid #333;">
+    <a href="index.html" style="color: white; text-decoration: none; font-size: 18px;">Главная</a>
+    <a href="gallery.html" style="color: white; text-decoration: none; font-size: 18px;">Галерея</a>
+  </nav>
+
+</body>
+</html>
