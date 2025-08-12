@@ -17,6 +17,7 @@ h1 {
   text-align: center;
   margin-bottom: 40px;
   color: #fff;
+  font-weight: 800; /* Жирнее */
 }
 
 p {
@@ -148,6 +149,17 @@ img {
 .desc-box.active {
   max-height: 150px;
   padding: 10px;
+}
+
+/* Настройки страницы */
+.settings-section h2 {
+  font-weight: 700; /* Чуть жирнее подзаголовок */
+  margin-bottom: 10px; /* Отступ от подзаголовка до списка */
+}
+
+.settings-section ol li {
+  font-weight: 600; /* Чуть жирнее текст пунктов */
+  margin-bottom: 6px; /* Отступ между пунктами */
 }
 
 /* Адаптив */
