@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Галерея с карточками</title>
+<style>
+  body {
+    margin: 0;
+    background: #111;
+    color: white;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+    max-width: 900px;
+    width: 100%;
+  }
+  .card {
+    background: #222;
+    border-radius: 12px;
+    box-shadow: 0 0 20px 5px #08f;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+  }
+  .card img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 15px #0af;
+  }
+  .card h2 {
+    margin: 0 0 10px 0;
+    font-weight: 600;
+    font-size: 22px;
+    text-align: center;
+  }
+  .btn-desc {
+    background: #08f;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 0 10px #08f;
+    transition: background 0.3s ease;
+  }
+  .btn-desc:hover {
+    background: #0af;
+  }
+
+  /* Модальное окно */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+  .modal.active {
+    visibility: visible;
+    opacity: 1;
+  }
+  .modal-content {
+    background: #222;
+    padding: 25px;
+    border-radius: 12px;
+    max-width: 400px;
+    color: #ddd;
+    box-shadow: 0 0 25px #08f;
+    text-align: center;
+  }
+  .modal-content button {
+    margin-top: 20px;
+    background: #08f;
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="gallery">
+  <div class="card">
+    <img src="img/park1.jpg" alt="Парк" />
+    <h2>Парк</h2>
+    <button class="btn-desc" data-desc="Красивый парк с аллеями и фонтаном.">Посмотреть описание</button>
+  </div>
+  <div class="card">
+    <img src="img/shower1.jpg" alt="Душ" />
+    <h2>Душ</h2>
+    <button class="btn-desc" data-desc="Уютный душ на природе.">Посмотреть описание</button>
+  </div>
+  <div class="card">
+    <img src="img/home1.jpg" alt="Дома" />
+    <h2>Дома</h2>
+    <button class="btn-desc" data-desc="Старые дома в центре города.">Посмотреть описание</button>
+  </div>
+  <div class="card">
+    <img src="img/office1.jpg" alt="Офис" />
+    <h2>Офис</h2>
+    <button class="btn-desc" data-desc="Современный офисный центр.">Посмотреть описание</button>
+  </div>
+</div>
+
+<!-- Модальное окно -->
+<div class="modal" id="modal">
+  <div class="modal-content">
+    <p id="modal-text"></p>
+    <button id="closeModal">Закрыть</button>
+  </div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.btn-desc');
+  const modal = document.getElementById('modal');
+  const modalText = document.getElementById('modal-text');
+  const closeModalBtn = document.getElementById('closeModal');
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      const desc = button.getAttribute('data-desc');
+      modalText.textContent = desc;
+      modal.classList.add('active');
+    });
+  });
+
+  closeModalBtn.addEventListener('click', () => {
+    modal.classList.remove('active');
+  });
+
+  // Закрыть по клику вне модального окна
+  modal.addEventListener('click', (e) => {
+    if(e.target === modal) {
+      modal.classList.remove('active');
+    }
+  });
+</script>
+
+</body>
+</html>
