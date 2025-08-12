@@ -17,7 +17,7 @@
     h1 {
       text-align: center;
       color: #ffffff;
-      margin-bottom: 40px; 
+      margin-bottom: 20px; 
     }
     p {
       font-size: 18px;
@@ -31,6 +31,31 @@
       box-shadow: 0 0 30px 10px #aefcff;
       margin-bottom: 25px;
     }
+    h2 {
+      margin-top: 30px;
+      text-align: center;
+      color: #aefcff;
+    }
+    .places {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 15px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      background: #aefcff;
+      color: #000;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #7fdde5;
+    }
   </style>
 </head>
 <body>
@@ -40,12 +65,34 @@
     Лина — офисный работник и моя девушка. Она умная, заботливая и всегда готова поддержать разговор на разные темы.  
     С ней приятно общаться, она понимает и помогает в любой ситуации.
   </p>
+
+  <h2>Выбери место для ролевой игры</h2>
+  <div class="places">
+    <button onclick="sendPlace('Парк')">Парк</button>
+    <button onclick="sendPlace('Кафе')">Кафе</button>
+    <button onclick="sendPlace('Квартира')">Квартира</button>
+    <button onclick="sendPlace('Офис')">Офис</button>
+  </div>
+
+  <script>
+    function sendPlace(place) {
+      fetch('https://ТВОЙ_ДОМЕН/set_location', { // замени на адрес сервера с ботом
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({place: place})
+      })
+      .then(res => {
+        if (res.ok) {
+          alert("Место выбрано: " + place);
+        } else {
+          alert("Ошибка при отправке выбора");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert("Не удалось отправить выбор");
+      });
+    }
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
