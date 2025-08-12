@@ -22,14 +22,6 @@
       color: #ffffff;
       margin-bottom: 40px; 
     }
-    /* Заголовок галереи */
-    #gallery h2 {
-      text-align: center;
-      color: #ffffff;
-      margin-bottom: 30px;
-      font-size: 28px;
-      font-weight: 700;
-    }
     p {
       font-size: 18px;
       line-height: 1.5;
@@ -90,12 +82,20 @@
     /* Галерея */
     #gallery {
       margin-bottom: 100px;
+      margin-top: 20px;
+      color: white;
+    }
+    #gallery h1 {
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      color: #fff;
     }
     .gallery {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px;
-      margin-top: 20px;
+      gap: 30px; /* увеличен отступ между карточками */
     }
     .card {
       background: #222;
@@ -103,23 +103,23 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px;
+      padding: 30px 0 0 0;
       max-width: 400px;
       width: 100%;
-      transition: height 0.3s ease;
       overflow: visible;
     }
     .card img {
       width: 100%;
-      height: 350px; /* увеличил высоту для больших фото */
-      object-fit: contain; /* чтобы полностью показывалось фото */
+      height: 350px; /* увеличена высота для полноразмерных фото */
+      object-fit: contain;
       border-radius: 20px;
       border: 4px solid white;
-      margin-bottom: 15px;
+      margin: 0; /* чтобы рамка была ровно по краю */
       box-shadow: none;
+      display: block;
     }
     .card h2 {
-      margin: 0 0 10px 0;
+      margin: 15px 0 10px 0;
       font-weight: 600;
       font-size: 20px;
       text-align: center;
@@ -157,35 +157,6 @@
       max-height: 150px;
       padding: 10px;
     }
-
-    /* Адаптивность для маленьких экранов */
-    @media (max-width: 480px) {
-      body {
-        margin: 20px 10px 100px;
-        max-width: 100%;
-        padding: 10px;
-      }
-
-      #gallery h2 {
-        font-size: 24px;
-        margin-bottom: 20px;
-      }
-
-      .gallery {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .card {
-        padding: 20px;
-        max-width: 100%;
-        min-width: auto;
-      }
-
-      .card img {
-        height: 250px; /* чуть меньше на мобиле */
-      }
-    }
   </style>
 </head>
 <body>
@@ -202,7 +173,7 @@
 
   <!-- Галерея (скрыта по умолчанию) -->
   <div id="gallery" class="hidden">
-    <h2>Галерея</h2>
+    <h1>Галерея</h1>
     <div class="gallery">
       <div class="card">
         <img src="img/Local2.png" alt="Парк" />
